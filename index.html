@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mr Ahmed Gamal - Quiz</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      margin: 0;
+      padding: 0;
+      color: #fff;
+    }
+    header {
+      text-align: center;
+      padding: 30px;
+      font-size: 2.5em;
+      font-weight: bold;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+    .card {
+      background: #ffffff20;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    label, p {
+      color: #fff;
+      font-size: 1.1em;
+    }
+    input[type="text"], input[type="tel"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      margin-bottom: 20px;
+      font-size: 1em;
+    }
+    .options {
+      margin-left: 20px;
+    }
+    button {
+      background: #ff9800;
+      border: none;
+      color: #fff;
+      padding: 12px 25px;
+      font-size: 1.1em;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #e68900;
+      transform: scale(1.05);
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 1.1em;
+      font-weight: bold;
+      text-align: left;
+      background: #ffffff15;
+      padding: 15px;
+      border-radius: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>Mr Ahmed Gamal - Quiz</header>
+
+  <div class="container">
+    <div class="card">
+      <label for="studentName">Student Name:</label>
+      <input type="text" id="studentName" placeholder="Your full name" required>
+      <label for="studentPhone">Phone Number:</label>
+      <input type="tel" id="studentPhone" placeholder="Your phone number" required>
+    </div>
+
+    <form id="quizForm"></form>
+
+    <div style="text-align:center;">
+      <button id="submitBtn">Submit</button>
+    </div>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbx_p_FsnFpRPp0lvA6krwBZUc51lK9yf_PQbJUg-pNBsCXRJD31GwTdevKRiq_dAN54/exec"; // حط لينك الاسكربت هنا
+    let questionsData = [];
+
+    async function loadQuestions() {
+      let res = await fetch(scriptURL); // GET بيرجع الأسئلة
+      questionsData = await res.json();
+
+      const quizForm = document.getElementById("quizForm");
+      quizForm.innerHTML = "";
+
+      questionsData.forEach((q, index) => {
+        let card = document.createElement("div");
+        card.classList.add("card");
+
+        let html = `<p>${index + 1}. ${q.question}</p><div class="options">`;
+        q.options.forEach((opt, i) => {
+          html += `
+            <label>
+              <input type="radio" name="${q.id}" value="${opt}"> ${String.fromCharCode(97 + i)}. ${opt}
+            </label><br>`;
+        });
+        html += `</div>`;
+        card.innerHTML = html;
+        quizForm.appendChild(card);
+      });
+    }
+
+    document.getElementById("submitBtn").addEventListener("click", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("studentName").value.trim();
+      const phone = document.getElementById("studentPhone").value.trim();
+      if (!name || !phone) {
+        alert("Please enter your name and phone number.");
+        return;
+      }
+
+      let score = 0;
+      let total = questionsData.length;
+      let wrongQuestions = [];
+
+      questionsData.forEach(q => {
+        let selected = document.querySelector(`input[name="${q.id}"]:checked`);
+        let allOptions = document.querySelectorAll(`input[name="${q.id}"]`);
+
+        allOptions.forEach(opt => {
+          let label = opt.parentElement;
+          label.style.color = "#fff";
+          if (opt.value === q.correct) {
+            label.style.color = "lightgreen";
+            label.style.fontWeight = "bold";
+          }
+          if (selected && opt === selected && selected.value !== q.correct) {
+            label.style.color = "red";
+          }
+        });
+
+        if (selected && selected.value === q.correct) {
+          score++;
+        } else {
+          wrongQuestions.push(q.id);
+          let card = document.querySelector(`input[name="${q.id}"]`).closest(".card");
+          let explanationDiv = document.createElement("div");
+          explanationDiv.style.marginTop = "10px";
+          explanationDiv.style.color = "#ffeb3b";
+          explanationDiv.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
+          if (!card.querySelector("div.explanation")) {
+            explanationDiv.classList.add("explanation");
+            card.appendChild(explanationDiv);
+          }
+        }
+      });
+
+      document.getElementById("result").innerHTML =
+        `✅ ${name}, your score is <strong>${score}/${total}</strong>`;
+
+      // ابعت النتيجة للشيت
+      fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify({ name, phone, score, total, wrong: wrongQuestions })
+      }).then(res => console.log("Result sent:", res));
+    });
+
+    loadQuestions();
+  </script>
+</body>
+</html>
