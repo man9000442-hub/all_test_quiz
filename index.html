@@ -8,7 +8,7 @@
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #0a0f2b; /* كحلي غامق */
+      background-color: #0a0f2b;
       margin: 0;
       padding: 0;
       color: #fff;
@@ -20,7 +20,6 @@
       overflow-x: hidden;
     }
 
-    /* خانة الكود */
     #studentCode, #studentGrade {
       width: 80%;
       max-width: 320px;
@@ -32,6 +31,7 @@
       display: block;
       margin-right: auto;
       margin-left: auto;
+      color: #000; /* ✅ الخط أسود عشان يبان */
     }
 
     button {
@@ -81,7 +81,6 @@
 </head>
 <body>
 
-  <!-- 🟩 مربع العنوان الأسود -->
   <div style="
     background-color: #000;
     color: #fff;
@@ -95,14 +94,13 @@
     max-width: 400px;
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
   ">
-    Mr <br> Quiz
+    Mr <br> quiz
   </div>
 
   <div id="main" class="text-center">
     <h2 class="text-xl font-bold mb-4">ادخل الكود الخاص بك</h2>
     <input type="text" id="studentCode" placeholder="اكتب الكود هنا">
 
-    <!-- 🔽 قائمة اختيار الصف تحت خانة الكود -->
     <select id="studentGrade">
       <option value="">اختر الصف الدراسي</option>
       <option value="Grade1Prep">أولى إعدادي</option>
@@ -113,34 +111,23 @@
       <option value="Grade3Sec">تالتة ثانوي</option>
     </select>
 
-    <!-- 🟩 زر "ابدأ" في بوكس أخضر صغير -->
-<div style="
-  background-color:#4CAF50;
-  display:inline-block;
-  padding:8px 18px;
-  border-radius:12px;
-  margin-top:10px;
-">
-  <button onclick="startQuiz()" style="
-    background:none;
-    border:none;
-    color:white;
-    font-weight:bold;
-    font-size:1em;
-    cursor:pointer;
-  ">ابدأ</button>
-</div>
+    <div style="margin-top: 10px;">
+      <button id="startBtn">ابدأ</button>
+    </div>
+  </div>
 
   <div id="quizContainer" class="hidden"></div>
 
   <script>
-    const QUESTIONS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzK-WBX8FUdOMIaYZ77p_1dLSqM7-sjIwEG0A6-QPcrqq2mznvJaNq8fAGmm46F7p5V/exec";
-    const RESULTS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyexX6GdySJ_2rGZUpebHS7Jl_q_Amj7ZlnpnSqdMYMIBNwbJQDLfO2LUbGlm1cl8w4-Q/exec";
+    const QUESTIONS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwOM0PAMFzQ1hDUea3I6ms0cQU6Clu-fMAVhjcvydmHFeIVxENnGjdxJxKiIBDPRc7k/exec";
+    const RESULTS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzeDhwndserSaZJ1CIWhkwXKRjeya-8Ebilk-6_sLRgZGWexvVISYfspbfy0alaIHAJXw/exec";
 
     let selectedGrade = "";
     let studentCode = "";
     let currentQuestions = [];
     let answers = {};
+
+    document.getElementById("startBtn").addEventListener("click", startQuiz);
 
     async function startQuiz() {
       studentCode = document.getElementById('studentCode').value.trim().toLowerCase();
@@ -161,12 +148,13 @@
 
     async function loadQuestions() {
       try {
-        const res = await fetch(${QUESTIONS_SCRIPT_URL}?grade=${selectedGrade});
+        const res = await fetch(`${QUESTIONS_SCRIPT_URL}?grade=${selectedGrade}`);
         const data = await res.json();
         currentQuestions = shuffleArray(data);
         showQuestions();
       } catch (err) {
         alert("حدث خطأ أثناء تحميل الأسئلة!");
+        console.error(err);
       }
     }
 
@@ -178,10 +166,10 @@
       currentQuestions.forEach((q, i) => {
         const div = document.createElement("div");
         div.className = "question-box";
-        let html = <h3>${i + 1}. ${q.question}</h3>;
-        if (q.image) html += <img src="${q.image}" class="rounded-xl my-2" style="max-width:100%">;
+        let html = `<h3>${i + 1}. ${q.question}</h3>`;
+        if (q.image) html += `<img src="${q.image}" class="rounded-xl my-2" style="max-width:100%">`;
         q.options.forEach(opt => {
-          html += <div class="option" onclick="selectOption(${i}, this, '${opt}')">${opt}</div>;
+          html += `<div class="option" onclick="selectOption(${i}, this, '${opt}')">${opt}</div>`;
         });
         div.innerHTML = html;
         container.appendChild(div);
@@ -211,9 +199,8 @@
       });
 
       document.getElementById("quizContainer").innerHTML =
-        <h2>نتيجتك: ${score} / ${currentQuestions.length}</h2>;
+        `<h2>نتيجتك: ${score} / ${currentQuestions.length}</h2>`;
 
-      // إرسال النتيجة إلى شيت النتائج
       await fetch(RESULTS_SCRIPT_URL, {
         method: "POST",
         body: JSON.stringify({
