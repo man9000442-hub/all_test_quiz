@@ -91,7 +91,7 @@ async function startQuiz(){
     const resWeek = await fetch(`${QUESTIONS_SCRIPT_URL}?grade=${selectedGrade}`);
     const dataWeek = await resWeek.json();
     CURRENT_WEEK = dataWeek.week; // الرقم موجود في JSON
-    currentQuestions = shuffleArray(dataWeek.questions); // الأسئلة
+    currentQuestions = data; // عرض الأسئلة كما هي من الشيت
     showQuestions();
     document.getElementById('main').classList.add('hidden');
   }catch(err){ alert("حدث خطأ أثناء تحميل الأسئلة!"); }
@@ -143,7 +143,10 @@ async function submitQuiz(){
   });
 }
 
-function shuffleArray(arr){ return arr.sort(()=>Math.random()-0.5); }
+function shuffleArray(arr) {
+  return arr; // لا تغيير في ترتيب الأسئلة
+}
+
 </script>
   <!-- الفوتر -->
   <div class="mt-10 text-center">
