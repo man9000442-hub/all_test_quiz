@@ -1,231 +1,233 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>منصة الكويز</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #0a0f2b;
-      margin: 0;
-      padding: 0;
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      overflow-x: hidden;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منصة الكويز</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #0a0f2b; 
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-x: hidden;
+}
 
-    #studentCode, #studentGrade {
-      width: 80%;
-      max-width: 320px;
-      padding: 8px;
-      border-radius: 10px;
-      border: none;
-      margin-bottom: 12px;
-      font-size: 1em;
-      display: block;
-      margin-right: auto;
-      margin-left: auto;
-      color: #000; /* ✅ الخط أسود عشان يبان */
-    }
+/* مربع العنوان */
+#titleBox {
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  padding: 15px 20px;
+  border-radius: 20px;
+  margin: 20px auto;
+  font-size: 1.4em;
+  font-weight: bold;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
 
-    button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 18px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 1em;
-    }
+/* خانة الكود والقائمة */
+#studentCode, #studentGrade {
+  width: 80%;
+  max-width: 320px;
+  padding: 8px;
+  border-radius: 10px;
+  border: none;
+  margin-bottom: 12px;
+  font-size: 1em;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  color: black; /* خط الكود أسود */
+}
 
-    button:hover {
-      background-color: #45a049;
-    }
+/* زر البداية */
+#startBtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1em;
+}
 
-    .question-box {
-      background-color: #1c1f3a;
-      border-radius: 20px;
-      padding: 20px;
-      margin: 10px;
-      box-shadow: 0 0 8px rgba(255,255,255,0.1);
-      width: 90%;
-      max-width: 600px;
-    }
+#startBtn:hover {
+  background-color: #45a049;
+}
 
-    .option {
-      background-color: #2a2e52;
-      padding: 10px;
-      border-radius: 10px;
-      margin: 5px 0;
-      cursor: pointer;
-    }
+.question-box {
+  background-color: #1c1f3a;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 10px;
+  box-shadow: 0 0 8px rgba(255,255,255,0.1);
+  width: 90%;
+  max-width: 600px;
+}
 
-    .option:hover {
-      background-color: #3a3f6d;
-    }
+.option {
+  background-color: #2a2e52;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 5px 0;
+  cursor: pointer;
+}
 
-    .correct {
-      background-color: #1f8f3a !important;
-    }
+.option:hover {
+  background-color: #3a3f6d;
+}
 
-    .wrong {
-      background-color: #b91c1c !important;
-    }
-  </style>
+.selected {
+  border: 2px solid #fff;
+}
+
+.correct {
+  background-color: #1f8f3a !important;
+}
+
+.wrong {
+  background-color: #b91c1c !important;
+}
+</style>
 </head>
 <body>
 
-  <div style="
-    background-color: #000;
-    color: #fff;
-    text-align: center;
-    padding: 15px 20px;
-    border-radius: 20px;
-    margin: 20px auto;
-    font-size: 1.4em;
-    font-weight: bold;
-    width: 90%;
-    max-width: 400px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  ">
-    Mr <br> quiz
+<div id="titleBox">Mr  <br> Quiz</div>
+
+<div id="main" class="text-center">
+  <h2 class="text-xl font-bold mb-4">ادخل الكود الخاص بك</h2>
+  <input type="text" id="studentCode" placeholder="اكتب الكود هنا">
+  
+  <select id="studentGrade">
+    <option value="">اختر الصف الدراسي</option>
+    <option value="Grade1Prep">أولى إعدادي</option>
+    <option value="Grade2Prep">تانية إعدادي</option>
+    <option value="Grade3Prep">تالتة إعدادي</option>
+    <option value="Grade1Sec">أولى ثانوي</option>
+    <option value="Grade2Sec">تانية ثانوي</option>
+    <option value="Grade3Sec">تالتة ثانوي</option>
+  </select>
+
+  <div style="margin-top: 10px;">
+    <button id="startBtn" onclick="startQuiz()">ابدأ</button>
   </div>
+</div>
 
-  <div id="main" class="text-center">
-    <h2 class="text-xl font-bold mb-4">ادخل الكود الخاص بك</h2>
-    <input type="text" id="studentCode" placeholder="اكتب الكود هنا">
+<div id="quizContainer" class="hidden"></div>
 
-    <select id="studentGrade">
-      <option value="">اختر الصف الدراسي</option>
-      <option value="Grade1Prep">أولى إعدادي</option>
-      <option value="Grade2Prep">تانية إعدادي</option>
-      <option value="Grade3Prep">تالتة إعدادي</option>
-      <option value="Grade1Sec">أولى ثانوي</option>
-      <option value="Grade2Sec">تانية ثانوي</option>
-      <option value="Grade3Sec">تالتة ثانوي</option>
-    </select>
+<script>
+const QUESTIONS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsJmFTbHCJeBw_2g1dtv1jLXS746PZy784TfeQJNC7sNVaDZW-clinYoLDlbZAXZND/exec"; // ضع رابط سكريبت الأسئلة
+const RESULTS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby59iGH5vMeRDtVXve7igydVI4rGcg0LxwCAFJAMyQZu7hfhcfOEMRlpp18yyVytq5yHw/exec"; // ضع رابط سكريبت النتائج
 
-    <div style="margin-top: 10px;">
-      <button id="startBtn">ابدأ</button>
+let selectedGrade = "";
+let studentCode = "";
+let currentQuestions = [];
+let answers = {};
+
+async function startQuiz() {
+  studentCode = document.getElementById('studentCode').value.trim().toLowerCase();
+  selectedGrade = document.getElementById('studentGrade').value;
+  
+  if (!studentCode) {
+    alert("من فضلك أدخل الكود أولًا");
+    return;
+  }
+  if (!selectedGrade) {
+    alert("من فضلك اختر الصف الدراسي");
+    return;
+  }
+
+  document.getElementById('main').classList.add('hidden');
+  await loadQuestions();
+}
+
+async function loadQuestions() {
+  try {
+    const res = await fetch(`${QUESTIONS_SCRIPT_URL}?grade=${selectedGrade}`);
+    const data = await res.json();
+    currentQuestions = shuffleArray(data);
+    showQuestions();
+  } catch (err) {
+    alert("حدث خطأ أثناء تحميل الأسئلة!");
+  }
+}
+
+function showQuestions() {
+  const container = document.getElementById("quizContainer");
+  container.innerHTML = "";
+  container.classList.remove("hidden");
+
+  currentQuestions.forEach((q, i) => {
+    const div = document.createElement("div");
+    div.className = "question-box";
+    let html = `<h3>${i + 1}. ${q.question}</h3>`;
+    if (q.image) html += `<img src="${q.image}" class="rounded-xl my-2" style="max-width:100%">`;
+    q.options.forEach(opt => {
+      html += `<div class="option" onclick="selectOption(${i}, this, '${opt}')">${opt}</div>`;
+    });
+    div.innerHTML = html;
+    container.appendChild(div);
+  });
+
+  const btn = document.createElement("button");
+  btn.textContent = "إنهاء";
+  btn.onclick = submitQuiz;
+  container.appendChild(btn);
+}
+
+function selectOption(i, element, answer) {
+  answers[i] = answer;
+  element.parentNode.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
+  element.classList.add("selected");
+}
+
+async function submitQuiz() {
+  let score = 0;
+  const wrongQs = [];
+
+  currentQuestions.forEach((q, i) => {
+    const correct = q.correct.trim();
+    const userAns = answers[i] || "";
+    if (userAns === correct) score++;
+    else wrongQs.push(i + 1);
+  });
+
+  document.getElementById("quizContainer").innerHTML =
+    `<h2>نتيجتك: ${score} / ${currentQuestions.length}</h2>`;
+
+  await fetch(RESULTS_SCRIPT_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      code: studentCode,
+      grade: selectedGrade,
+      score: score,
+      wrong: wrongQs
+    })
+  });
+}
+
+function shuffleArray(arr) {
+  return arr.sort(() => Math.random() - 0.5);
+}
+</script>
+  <!-- الفوتر -->
+  <div class="mt-10 text-center">
+    <div class="bg-black text-white px-4 py-2 rounded-2xl text-sm">
+      <p>صمم بواسطة Boda</p>
+      <p class="text-xs text-gray-400 cursor-pointer" onclick="window.open('https://wa.me/201111111111', '_blank')">
+        انقر للتواصل
+      </p>
     </div>
   </div>
-
-  <div id="quizContainer" class="hidden"></div>
-
-  <script>
-    const QUESTIONS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwOM0PAMFzQ1hDUea3I6ms0cQU6Clu-fMAVhjcvydmHFeIVxENnGjdxJxKiIBDPRc7k/exec";
-    const RESULTS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzeDhwndserSaZJ1CIWhkwXKRjeya-8Ebilk-6_sLRgZGWexvVISYfspbfy0alaIHAJXw/exec";
-
-    let selectedGrade = "";
-    let studentCode = "";
-    let currentQuestions = [];
-    let answers = {};
-
-    document.getElementById("startBtn").addEventListener("click", startQuiz);
-
-    async function startQuiz() {
-      studentCode = document.getElementById('studentCode').value.trim().toLowerCase();
-      selectedGrade = document.getElementById('studentGrade').value;
-      
-      if (!studentCode) {
-        alert("من فضلك أدخل الكود أولًا");
-        return;
-      }
-      if (!selectedGrade) {
-        alert("من فضلك اختر الصف الدراسي");
-        return;
-      }
-
-      document.getElementById('main').classList.add('hidden');
-      await loadQuestions();
-    }
-
-    async function loadQuestions() {
-      try {
-        const res = await fetch(`${QUESTIONS_SCRIPT_URL}?grade=${selectedGrade}`);
-        const data = await res.json();
-        currentQuestions = shuffleArray(data);
-        showQuestions();
-      } catch (err) {
-        alert("حدث خطأ أثناء تحميل الأسئلة!");
-        console.error(err);
-      }
-    }
-
-    function showQuestions() {
-      const container = document.getElementById("quizContainer");
-      container.innerHTML = "";
-      container.classList.remove("hidden");
-
-      currentQuestions.forEach((q, i) => {
-        const div = document.createElement("div");
-        div.className = "question-box";
-        let html = `<h3>${i + 1}. ${q.question}</h3>`;
-        if (q.image) html += `<img src="${q.image}" class="rounded-xl my-2" style="max-width:100%">`;
-        q.options.forEach(opt => {
-          html += `<div class="option" onclick="selectOption(${i}, this, '${opt}')">${opt}</div>`;
-        });
-        div.innerHTML = html;
-        container.appendChild(div);
-      });
-
-      const btn = document.createElement("button");
-      btn.textContent = "إنهاء";
-      btn.onclick = submitQuiz;
-      container.appendChild(btn);
-    }
-
-    function selectOption(i, element, answer) {
-      answers[i] = answer;
-      element.parentNode.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
-      element.classList.add("selected");
-    }
-
-    async function submitQuiz() {
-      let score = 0;
-      const wrongQs = [];
-
-      currentQuestions.forEach((q, i) => {
-        const correct = q.correct.trim();
-        const userAns = answers[i] || "";
-        if (userAns === correct) score++;
-        else wrongQs.push(i + 1);
-      });
-
-      document.getElementById("quizContainer").innerHTML =
-        `<h2>نتيجتك: ${score} / ${currentQuestions.length}</h2>`;
-
-      await fetch(RESULTS_SCRIPT_URL, {
-        method: "POST",
-        body: JSON.stringify({
-          code: studentCode,
-          grade: selectedGrade,
-          score: score,
-          wrong: wrongQs
-        })
-      });
-    }
-
-    function shuffleArray(arr) {
-      return arr.sort(() => Math.random() - 0.5);
-    }
-  </script>
-  <!-- ✅ زر واتساب المستر -->
-  <a href="https://wa.me/201225580865" target="_blank" class="fixed bottom-6 right-6 bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-full shadow-lg transition transform hover:scale-105">
-    💬 تواصل مع Mr Ahmed Gamal
-  </a>
-  <!-- ✅ الفوتر الأسود (كيرفي) -->
-<a href="https://wa.me/201094724932" target="_blank" class="w-full flex flex-col items-center justify-center text-center mt-10 mb-4">
-  <div class="bg-black text-white py-4 px-6 rounded-3xl shadow-lg w-64 hover:bg-gray-800 transition cursor-pointer">
-    <p class="font-bold text-lg">صُمم بواسطة Boda</p>
-    <p class="text-sm text-gray-300 mt-1">انقر للتواصل</p>
-  </div>
-</a>
 </body>
 </html>
