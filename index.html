@@ -1,184 +1,155 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mr Ahmed Gamal - Quiz</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
-      margin: 0;
-      padding: 0;
-      color: #fff;
-    }
-    header {
-      text-align: center;
-      padding: 30px;
-      font-size: 2.5em;
-      font-weight: bold;
-    }
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 20px;
-    }
-    .card {
-      background: #ffffff20;
-      border-radius: 20px;
-      padding: 20px;
-      margin-bottom: 20px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    }
-    label, p {
-      color: #fff;
-      font-size: 1.1em;
-    }
-    input[type="text"], input[type="tel"] {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-      margin-bottom: 20px;
-      font-size: 1em;
-    }
-    .options {
-      margin-left: 20px;
-    }
-    button {
-      background: #ff9800;
-      border: none;
-      color: #fff;
-      padding: 12px 25px;
-      font-size: 1.1em;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #e68900;
-      transform: scale(1.05);
-    }
-    #result {
-      margin-top: 20px;
-      font-size: 1.1em;
-      font-weight: bold;
-      text-align: left;
-      background: #ffffff15;
-      padding: 15px;
-      border-radius: 15px;
-    }
-  </style>
+  <title> Quiz</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center">
 
-  <header>Mr Ahmed Gamal - Quiz</header>
-
-  <div class="container">
-    <div class="card">
-      <label for="studentName">Student Name:</label>
-      <input type="text" id="studentName" placeholder="Your full name" required>
-      <label for="studentPhone">Phone Number:</label>
-      <input type="tel" id="studentPhone" placeholder="Your phone number" required>
-    </div>
-
-    <form id="quizForm"></form>
-
-    <div style="text-align:center;">
-      <button id="submitBtn">Submit</button>
-    </div>
-
-    <div id="result"></div>
+  <!-- ✅ الهيدر الكيرفي -->
+  <div class="bg-gradient-to-r from-purple-600 to-blue-500 text-center w-full max-w-3xl mt-6 p-6 rounded-3xl shadow-lg">
+    <h1 class="text-3xl font-bold">test</h1>
+    <p class="text-xl mt-2">Quiz</p>
   </div>
 
+  <!-- ✅ اختيار الصف -->
+  <div id="classSelection" class="text-center mt-10">
+    <h2 class="text-2xl font-bold mb-4">اختر الصف الدراسي</h2>
+    <select id="classSelect" class="text-black p-2 rounded">
+      <option value="">-- اختر الصف --</option>
+      <option value="g1">أولى إعدادي</option>
+      <option value="g2">تانية إعدادي</option>
+      <option value="g3">تالتة إعدادي</option>
+      <option value="s1">أولى ثانوي</option>
+      <option value="s2">تانية ثانوي</option>
+      <option value="s3">تالتة ثانوي</option>
+    </select>
+    <button id="startBtn" class="bg-blue-600 px-4 py-2 rounded ml-2">ابدأ</button>
+  </div>
+
+  <!-- ✅ الكويز -->
+  <div id="quizSection" class="hidden w-full max-w-3xl mt-10">
+    <div class="mb-4">
+      <input id="studentName" placeholder="الاسم" class="p-2 text-black rounded w-1/2 mb-2"><br>
+      <input id="studentPhone" placeholder="رقم التليفون" class="p-2 text-black rounded w-1/2">
+    </div>
+    <form id="quizForm" class="space-y-4"></form>
+    <button id="submitBtn" class="bg-green-600 px-4 py-2 rounded mt-4">إرسال</button>
+    <div id="result" class="mt-6 text-xl font-bold"></div>
+  </div>
+
+  <!-- ✅ زر واتساب المستر -->
+  <a href="https://wa.me/2010865" target="_blank" class="fixed bottom-6 right-6 bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-full shadow-lg transition transform hover:scale-105">
+    💬 تواصل مع
+  </a>
+  <!-- ✅ الفوتر الأسود (كيرفي) -->
+<a href="https://wa.me/201094724932" target="_blank" class="w-full flex flex-col items-center justify-center text-center mt-10 mb-4">
+  <div class="bg-black text-white py-4 px-6 rounded-3xl shadow-lg w-64 hover:bg-gray-800 transition cursor-pointer">
+    <p class="font-bold text-lg">صُمم بواسطة Boda</p>
+    <p class="text-sm text-gray-300 mt-1">انقر للتواصل</p>
+  </div>
+</a>
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbx_p_FsnFpRPp0lvA6krwBZUc51lK9yf_PQbJUg-pNBsCXRJD31GwTdevKRiq_dAN54/exec"; // حط لينك الاسكربت هنا
-    let questionsData = [];
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxIhUQkaU1QQS1uZLiVrfZzu9WmlpL_Ch6LhKQmgt4_IXceKar2po_jg7-RzNsV2ATr/exec";
 
-    async function loadQuestions() {
-      let res = await fetch(scriptURL); // GET بيرجع الأسئلة
-      questionsData = await res.json();
+    let questions = [];
+    let correctAnswers = {};
+    let explanations = {};
+    let selectedClass = "";
 
-      const quizForm = document.getElementById("quizForm");
-      quizForm.innerHTML = "";
+    const classNames = {
+      g1: "أولى إعدادي",
+      g2: "تانية إعدادي",
+      g3: "تالتة إعدادي",
+      s1: "أولى ثانوي",
+      s2: "تانية ثانوي",
+      s3: "تالتة ثانوي"
+    };
 
-      questionsData.forEach((q, index) => {
-        let card = document.createElement("div");
-        card.classList.add("card");
+    document.getElementById("startBtn").addEventListener("click", async () => {
+      selectedClass = document.getElementById("classSelect").value;
+      if (!selectedClass) return alert("من فضلك اختر الصف الدراسي");
 
-        let html = `<p>${index + 1}. ${q.question}</p><div class="options">`;
-        q.options.forEach((opt, i) => {
-          html += `
-            <label>
-              <input type="radio" name="${q.id}" value="${opt}"> ${String.fromCharCode(97 + i)}. ${opt}
-            </label><br>`;
-        });
-        html += `</div>`;
-        card.innerHTML = html;
-        quizForm.appendChild(card);
+      const qSheet = `questions_${selectedClass}`;
+
+      let res = await fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify({
+          type: "getQuestions",
+          classSheet: qSheet
+        })
+      });
+
+      questions = await res.json();
+      showQuestions();
+      document.getElementById("classSelection").classList.add("hidden");
+      document.getElementById("quizSection").classList.remove("hidden");
+    });
+
+    function showQuestions() {
+      const form = document.getElementById("quizForm");
+      form.innerHTML = "";
+      questions.forEach(q => {
+        correctAnswers[q.id] = q.correct;
+        explanations[q.id] = q.explanation;
+
+        let html = `
+          <div class="card bg-gray-800 p-4 rounded-xl">
+            <p class="font-bold mb-2">${q.question}</p>
+            ${q.choices.map(c => `
+              <label class="block"><input type="radio" name="${q.id}" value="${c}"> ${c}</label>
+            `).join("")}
+          </div>
+        `;
+        form.innerHTML += html;
       });
     }
 
-    document.getElementById("submitBtn").addEventListener("click", function(e) {
+    document.getElementById("submitBtn").addEventListener("click", async (e) => {
       e.preventDefault();
       const name = document.getElementById("studentName").value.trim();
       const phone = document.getElementById("studentPhone").value.trim();
-      if (!name || !phone) {
-        alert("Please enter your name and phone number.");
-        return;
-      }
+      if (!name || !phone) return alert("من فضلك اكتب الاسم ورقم التليفون");
 
-      let score = 0;
-      let total = questionsData.length;
-      let wrongQuestions = [];
+      let score = 0, wrong = [], total = questions.length;
+      questions.forEach(q => {
+        const selected = document.querySelector(`input[name="${q.id}"]:checked`);
+        const card = document.querySelector(`input[name="${q.id}"]`).closest(".card");
+        const all = document.querySelectorAll(`input[name="${q.id}"]`);
 
-      questionsData.forEach(q => {
-        let selected = document.querySelector(`input[name="${q.id}"]:checked`);
-        let allOptions = document.querySelectorAll(`input[name="${q.id}"]`);
-
-        allOptions.forEach(opt => {
+        all.forEach(opt => {
           let label = opt.parentElement;
           label.style.color = "#fff";
-          if (opt.value === q.correct) {
-            label.style.color = "lightgreen";
-            label.style.fontWeight = "bold";
-          }
-          if (selected && opt === selected && selected.value !== q.correct) {
-            label.style.color = "red";
-          }
+          if (opt.value === q.correct) label.style.color = "lightgreen";
+          if (selected && opt === selected && selected.value !== q.correct) label.style.color = "red";
         });
 
-        if (selected && selected.value === q.correct) {
-          score++;
-        } else {
-          wrongQuestions.push(q.id);
-          let card = document.querySelector(`input[name="${q.id}"]`).closest(".card");
-          let explanationDiv = document.createElement("div");
-          explanationDiv.style.marginTop = "10px";
-          explanationDiv.style.color = "#ffeb3b";
-          explanationDiv.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
-          if (!card.querySelector("div.explanation")) {
-            explanationDiv.classList.add("explanation");
-            card.appendChild(explanationDiv);
-          }
+        if (selected && selected.value === q.correct) score++;
+        else {
+          wrong.push(q.id);
+          const exp = document.createElement("div");
+          exp.classList.add("explanation");
+          exp.style.color = "#ffeb3b";
+          exp.style.marginTop = "5px";
+          exp.innerHTML = `<b>الشرح:</b> ${q.explanation}`;
+          card.appendChild(exp);
         }
       });
 
-      document.getElementById("result").innerHTML =
-        `✅ ${name}, your score is <strong>${score}/${total}</strong>`;
+      document.getElementById("result").innerHTML = `✅ نتيجتك: ${score} / ${total}`;
 
-      // ابعت النتيجة للشيت
-      fetch(scriptURL, {
+      await fetch(scriptURL, {
         method: "POST",
-        body: JSON.stringify({ name, phone, score, total, wrong: wrongQuestions })
-      }).then(res => console.log("Result sent:", res));
+        body: JSON.stringify({
+          type: "saveResult",
+          className: classNames[selectedClass],
+          name, phone, score, total, wrong
+        })
+      });
     });
-
-    loadQuestions();
   </script>
 </body>
 </html>
