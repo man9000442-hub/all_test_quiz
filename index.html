@@ -41,53 +41,42 @@ Mr <br> Quiz
 <div id="quizContainer" class="hidden"></div>
 
 <script>
-const QUESTIONS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyZLjeKmQB3Q-Ok8LBSHUcO-g19fhJeHkMnjpxGAQIVg9-jlj1Bu2OOKkokP4GXbumz/exec";
-const RESULTS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwfo_zqY2QIUGvrRF71hDL33kjuUOCOaUR_Vbu32jAS7cc3a_XLfLfCiVYT1D2amm_gZQ/exec";
-let selectedGrade="",studentCode="",currentQuestions=[],answers={};
+  async function submitQuiz() {
+    let score = 0;
+    const wrongQs = [];
 
-async function startQuiz(){
-studentCode=document.getElementById('studentCode').value.trim().toLowerCase();
-selectedGrade=document.getElementById('studentGrade').value;
-if(!studentCode){alert("من فضلك أدخل الكود أولًا");return;}
-if(!selectedGrade){alert("من فضلك اختر الصف الدراسي");return;}
-document.getElementById('main').classList.add('hidden');
-await loadQuestions();
-}
+    currentQuestions.forEach((q, i) => {
+      const correct = q.correct.trim().toLowerCase();
+      const userAns = (answers[i] || "").trim().toLowerCase();
 
-async function loadQuestions(){
-try{
-const res=await fetch(`${QUESTIONS_SCRIPT_URL}?grade=${selectedGrade}`);
-const data=await res.json();
-currentQuestions=data.questions;
-showQuestions();
-}catch(err){alert("حدث خطأ أثناء تحميل الأسئلة!");console.error(err);}
-}
+      if(userAns === correct){
+        score++;
+      } else {
+        wrongQs.push(i + 1);
+      }
+    });
 
-function showQuestions(){
-const container=document.getElementById("quizContainer");
-container.innerHTML="";
-container.classList.remove("hidden");
-currentQuestions.forEach((q,i)=>{
-let div=document.createElement("div");div.className="question-box";
-let html=`<h3>${i+1}. ${q.question}</h3>`;
-if(q.image)html+=`<img src="${q.image}" class="rounded-xl my-2" style="max-width:100%">`;
-q.options.forEach(opt=>{html+=`<div class="option" onclick="selectOption(${i},this,'${opt}')">${opt}</div>`;});
-div.innerHTML=html;container.appendChild(div);
-});
-const btn=document.createElement("button");btn.textContent="إنهاء";btn.onclick=submitQuiz;container.appendChild(btn);
-}
+    document.getElementById("quizContainer").innerHTML =
+      `<h2>نتيجتك: ${score} / ${currentQuestions.length}</h2>`;
 
-function selectOption(i,element,answer){answers[i]=answer;element.parentNode.querySelectorAll(".option").forEach(o=>o.classList.remove("selected"));element.classList.add("selected");}
-
-async function submitQuiz(){
-let score=0;const wrongQs=[];
-currentQuestions.forEach((q,i)=>{const correct=q.correct.trim();const userAns=answers[i]||"";if(userAns===correct)score++;else wrongQs.push(i+1);});
-document.getElementById("quizContainer").innerHTML=`<h2>نتيجتك: ${score} / ${currentQuestions.length}</h2>`;
-await fetch(RESULTS_SCRIPT_URL,{method:"POST",body:JSON.stringify({code:studentCode,grade:selectedGrade,score:score,wrong:wrongQs})});
-}
-
+    // إرسال النتيجة إلى شيت النتائج
+    try {
+      const res = await fetch(RESULTS_SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          code: studentCode,
+          grade: selectedGrade,
+          score: score,
+          wrong: wrongQs
+        })
+      });
+      const result = await res.json();
+      console.log(result);
+    } catch(err){
+      console.error("Failed to send results:", err);
+    }
+  }
 </script>
-</body>
   <!-- الفوتر -->
   <div class="mt-10 text-center">
     <div class="bg-black text-white px-4 py-2 rounded-2xl text-sm">
@@ -97,4 +86,5 @@ await fetch(RESULTS_SCRIPT_URL,{method:"POST",body:JSON.stringify({code:studentC
       </p>
     </div>
   </div>
+</body>
 </html>
